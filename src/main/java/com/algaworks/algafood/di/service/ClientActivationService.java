@@ -1,25 +1,22 @@
 package com.algaworks.algafood.di.service;
 
-import org.springframework.stereotype.Component;
-
 import com.algaworks.algafood.di.model.Client;
 import com.algaworks.algafood.di.notification.Notifier;
 
-@Component
 public class ClientActivationService {
 	
-	private Notifier notificador;
+	private Notifier notifier;
 	
-	public ClientActivationService(Notifier notificador) {
-		this.notificador = notificador;
+	public ClientActivationService(Notifier notifier) {
+		this.notifier = notifier;
 		
-		System.out.println("ClientActivationService: " + notificador);
+		System.out.println("ClientActivationService: " + notifier);
 	}
 
 	public void activate(Client client) {
 		client.activate();
 		
-		notificador.notify(client, "Your registration in the system is active!");
+		notifier.notify(client, "Your registration in the system is active!");
 	}
 
 }
