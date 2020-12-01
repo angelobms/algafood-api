@@ -4,14 +4,14 @@ import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.di.model.Client;
 
-@TypeNotification(UrgencyLevel.NORMAL)
+@TypeNotification(UrgencyLevel.URGENT)
 @Component
-public class NotifierEmail implements Notifier {
+public class NotifierSMS implements Notifier {
 
 	@Override
 	public void notify(Client client, String message) {
-		System.out.printf("Notifying %s through email %s: %s\n", 
-				client.getName(), client.getEmail(), message);
+		System.out.printf("Notifying SMS %s through phone %s: %s\n", 
+				client.getName(), client.getPhone(), message);
 	}
 
 }

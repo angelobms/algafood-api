@@ -1,5 +1,6 @@
 package com.algaworks.algafood;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,10 +13,9 @@ public class MyFirstController {
 	
 	private ClientActivationService clientActivationService;
 	
+	@Autowired
 	public MyFirstController(ClientActivationService clientActivationService) {
 		this.clientActivationService = clientActivationService;
-		
-		System.out.println("MyFirstController: " + clientActivationService);
 	}
 
 	@GetMapping("/hello")
