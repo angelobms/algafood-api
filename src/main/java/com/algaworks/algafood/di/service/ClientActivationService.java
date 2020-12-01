@@ -5,10 +5,13 @@ import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.di.model.Client;
 import com.algaworks.algafood.di.notification.Notifier;
+import com.algaworks.algafood.di.notification.TypeNotification;
+import com.algaworks.algafood.di.notification.UrgencyLevel;
 	
 @Component
 public class ClientActivationService {
 	
+	@TypeNotification(UrgencyLevel.URGENT)
 	@Autowired
 	private Notifier notifier;
 
