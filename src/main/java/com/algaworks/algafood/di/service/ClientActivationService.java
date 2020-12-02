@@ -1,19 +1,28 @@
 package com.algaworks.algafood.di.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.di.model.Client;
 import com.algaworks.algafood.di.notification.Notifier;
 import com.algaworks.algafood.di.notification.TypeNotification;
 import com.algaworks.algafood.di.notification.UrgencyLevel;
 	
-@Component
+//@Component
 public class ClientActivationService {
 	
 	@TypeNotification(UrgencyLevel.URGENT)
 	@Autowired
 	private Notifier notifier;
+	
+//	@PostConstruct
+	public void init() {
+		System.out.println("INIT " + notifier);
+	}
+	
+//	@PreDestroy
+	public void destroy() {
+		System.out.println("DESTROY");
+	}
 
 	public void activate(Client client) {
 		client.activate();
