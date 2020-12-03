@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.di.model.Client;
 
-@Profile("dev")
+@Profile("development")
 @TypeNotification(UrgencyLevel.NORMAL)
 @Component
 public class NotifierEmailMock implements Notifier {
