@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Kitchen;
+import com.algaworks.algafood.domain.repository.KitchenRepository;
 
 public class ExclusionKitchenMain {
 	
@@ -15,12 +16,12 @@ public class ExclusionKitchenMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 		
-		RegisterKitchen registerKitchen = applicationContext.getBean(RegisterKitchen.class);
+		KitchenRepository kitchenRepository = applicationContext.getBean(KitchenRepository.class);
 		
 		Kitchen kitchen1 = new Kitchen();
 		kitchen1.setId(1L);
 		
-		registerKitchen.delete(kitchen1);
+		kitchenRepository.delete(kitchen1);
 		
 	}
 

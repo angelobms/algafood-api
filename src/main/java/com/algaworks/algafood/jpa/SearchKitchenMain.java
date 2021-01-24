@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Kitchen;
+import com.algaworks.algafood.domain.repository.KitchenRepository;
 
 public class SearchKitchenMain {
 	
@@ -15,8 +16,8 @@ public class SearchKitchenMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 		
-		RegisterKitchen registerKitchen = applicationContext.getBean(RegisterKitchen.class);
-		Kitchen kitchen = registerKitchen.find(1L);
+		KitchenRepository kitchenRepository = applicationContext.getBean(KitchenRepository.class);
+		Kitchen kitchen = kitchenRepository.find(1L);
 		
 		System.out.println(kitchen.getName());
 		

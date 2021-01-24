@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Kitchen;
+import com.algaworks.algafood.domain.repository.KitchenRepository;
 
 public class InclusionKitchenMain {
 	
@@ -15,7 +16,7 @@ public class InclusionKitchenMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 		
-		RegisterKitchen registerKitchen = applicationContext.getBean(RegisterKitchen.class);
+		KitchenRepository kitchenRepository = applicationContext.getBean(KitchenRepository.class);
 		
 		Kitchen kitchen1 = new Kitchen();
 		kitchen1.setName("Mexicana");
@@ -23,8 +24,8 @@ public class InclusionKitchenMain {
 		Kitchen kitchen2 = new Kitchen();
 		kitchen2.setName("Arabe");
 		
-		kitchen1 = registerKitchen.add(kitchen1);
-		kitchen2 = registerKitchen.add(kitchen2);
+		kitchen1 = kitchenRepository.save(kitchen1);
+		kitchen2 = kitchenRepository.save(kitchen2);
 		
 		System.out.printf("%d - %s\n", kitchen1.getId(), kitchen1.getName());
 		System.out.printf("%d - %s\n", kitchen2.getId(), kitchen2.getName());
