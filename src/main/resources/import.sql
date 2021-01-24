@@ -1,0 +1,5 @@
+insert into kitchen (name) values ('Tailandesa')
+insert into kitchen (name) values ('Indiana')
+insert into kitchen (name) values ('Brasileira')
+insert into kitchen (name) values ('Japonesa')
+insert into kitchen (name) values ('Americana')
