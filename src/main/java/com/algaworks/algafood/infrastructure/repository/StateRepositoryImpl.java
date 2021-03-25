@@ -9,40 +9,40 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.algaworks.algafood.domain.model.Restaurant;
-import com.algaworks.algafood.domain.repository.RestaurantRepository;
+import com.algaworks.algafood.domain.model.State;
+import com.algaworks.algafood.domain.repository.StateRepository;
 
 @Component
-public class RestaurantRepositoryImpl implements RestaurantRepository {
-	
+public class StateRepositoryImpl implements StateRepository {
+
 	@PersistenceContext
 	private EntityManager manager;
-
+	
 	@Override
-	public List<Restaurant> list() {
-		return manager.createQuery("from Restaurant", Restaurant.class).getResultList();
+	public List<State> list() {
+		return manager.createQuery("from State", State.class).getResultList();
 	}
 
 	@Override
-	public Restaurant find(Long id) {
-		return manager.find(Restaurant.class, id);
+	public State find(Long id) {
+		return manager.find(State.class, id);
 	}
 
 	@Transactional
 	@Override
-	public Restaurant save(Restaurant restaurant) {
-		return manager.merge(restaurant);
+	public State save(State state) {
+		return manager.merge(state);
 	}
 
 	@Transactional
 	@Override
 	public void delete(Long id) {
-		Restaurant restaurant = find(id);
+		State state = find(id);
 		
-		if (restaurant == null) {
+		if (state == null) {
 			throw new EmptyResultDataAccessException(1);
 		}
-		manager.remove(restaurant);
+		manager.remove(state);
 	}
 
 }
