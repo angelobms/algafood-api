@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -35,15 +36,15 @@ public class StateController {
 	
 	@GetMapping
 	public List<State> list() {
-		return stateRepository.list();
+		return stateRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<State> find(@PathVariable Long id) {
-		State state = stateRepository.find(id);
+		Optional<State> state = stateRepository.findById(id);
 		
-		if (state != null) {
-			return ResponseEntity.ok(state);
+		if (state.isPresent()) {
+			return ResponseEntity.ok(state.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -57,13 +58,13 @@ public class StateController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<State> update(@PathVariable Long id, @RequestBody State state) {
-		State state2 = stateRepository.find(id);
+		State state2 = stateRepository.findById(id).orElse(null);
 		
 		if (state2 != null) {
 			BeanUtils.copyProperties(state, state2, "id");
 			
-			state2 = stateRegistrationService.save(state2);
-			return ResponseEntity.ok(state2);
+			State stateSaved = stateRegistrationService.save(state2);
+			return ResponseEntity.ok(stateSaved);
 		}
 		
 		return ResponseEntity.notFound().build();

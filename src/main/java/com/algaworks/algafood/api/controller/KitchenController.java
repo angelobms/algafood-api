@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -37,20 +38,20 @@ public class KitchenController {
 	
 	@GetMapping
 	public List<Kitchen> list() {
-		return kitchenRepository.list();
+		return kitchenRepository.findAll();
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
 	public KitchensXmlWrapper listXml() {
-		return new KitchensXmlWrapper(kitchenRepository.list());
+		return new KitchensXmlWrapper(kitchenRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Kitchen> find(@PathVariable("id") Long id) {
-		Kitchen kitchen = kitchenRepository.find(id);
+		Optional<Kitchen> kitchen = kitchenRepository.findById(id);
 		
-		if (kitchen != null) {
-			return ResponseEntity.ok(kitchen); 
+		if (kitchen.isPresent()) {
+			return ResponseEntity.ok(kitchen.get()); 
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -64,13 +65,13 @@ public class KitchenController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Kitchen> update(@PathVariable Long id, @RequestBody Kitchen kitchen) {
-		Kitchen kitchen2 = kitchenRepository.find(id);
+		Optional<Kitchen> kitchen2 = kitchenRepository.findById(id);
 		
-		if (kitchen2 != null) {
-			BeanUtils.copyProperties(kitchen, kitchen2, "id");
+		if (kitchen2.isPresent()) {
+			BeanUtils.copyProperties(kitchen, kitchen2.get(), "id");
 			
-			kitchen2 = kitchenRegistrationService.save(kitchen2);
-			return ResponseEntity.ok(kitchen2);			
+			Kitchen kitchenSaved  = kitchenRegistrationService.save(kitchen2.get());
+			return ResponseEntity.ok(kitchenSaved);			
 		}
 		
 		return ResponseEntity.notFound().build();

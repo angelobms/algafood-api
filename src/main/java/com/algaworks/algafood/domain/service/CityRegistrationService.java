@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,8 @@ public class CityRegistrationService {
 	
 	public City save(City city) {
 		Long stateId = city.getState().getId();
-		State state = stateRepository.find(stateId);
-		
-		if (state == null) {
-			throw new EntityNotFoundException(
-					String.format("There is no state register with the code %d.", stateId));
-		}
+		State state = stateRepository.findById(stateId).orElseThrow(() -> new EntityNotFoundException(
+				String.format("There is no state register with the code %d.", stateId)));
 		
 		city.setState(state);
 		
@@ -35,7 +33,7 @@ public class CityRegistrationService {
 	
 	public void delete(Long cityId) {
 		try {
-			cityRepositpry.delete(cityId);
+			cityRepositpry.deleteById(cityId);
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(

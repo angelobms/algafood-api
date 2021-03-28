@@ -1,13 +1,11 @@
 package com.algaworks.algafood.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.model.City;
 
-public interface CityRepositpry {
+@Repository
+public interface CityRepositpry extends JpaRepository<City, Long> {
 
-	List<City> list();
-	City find(Long id);
-	City save(City city);
-	void delete(Long id);
 }
