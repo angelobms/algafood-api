@@ -21,12 +21,8 @@ public class RestaurantRegistrationService {
 	
 	public Restaurant save(Restaurant restaurant) {
 		Long kitchenId = restaurant.getKitchen().getId();
-		Kitchen kitchen = kitchenRepository.find(kitchenId);
-		
-		if (kitchen == null) {
-			throw new EntityNotFoundException(
-					String.format("There is no kitchen register with the code %d.", kitchenId));
-		}
+		Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() -> new EntityNotFoundException(
+				String.format("There is no kitchen register with the code %d.", kitchenId)));
 		
 		restaurant.setKitchen(kitchen);
 		
@@ -35,7 +31,7 @@ public class RestaurantRegistrationService {
 	
 	public void delete(Long restaurantId) {
 		try {
-			restaurantRepository.delete(restaurantId);
+			restaurantRepository.deleteById(restaurantId);
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(

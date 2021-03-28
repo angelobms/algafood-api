@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +39,34 @@ public class RestaurantController {
 	
 	@GetMapping
 	public List<Restaurant> list() {
-		return restaurantRepository.list();
+		return restaurantRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurant> find(@PathVariable Long id) {
-		Restaurant restaurant = restaurantRepository.find(id);
+		Optional<Restaurant> restaurant = restaurantRepository.findById(id);
 		
-		if (restaurant != null) {
-			return ResponseEntity.ok(restaurant);
+		if (restaurant.isPresent()) {
+			return ResponseEntity.ok(restaurant.get());
 		}
 		
 		return ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/with-free-shipping")
+	public List<Restaurant> restaurantWithFreeShipping(String name) {
+		
+//		var withFreeShipping = new RestaurantWithFreeShippingSpec();
+//		var withSimilarName = new RestaurantWithSimilarNameSpec(name);
+		
+//		return restaurantRepository.findAll(withFreeShipping().and(withSimilarName(name)));
+		
+		return restaurantRepository.findWithFreeShipping(name);
+	}
+	
+	@GetMapping("/first")
+	public Optional<Restaurant> restaurantFirst() {
+		return restaurantRepository.findFirst();
 	}
 	
 	@PostMapping
@@ -65,7 +82,7 @@ public class RestaurantController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Restaurant restaurant) {
 		try {
-			Restaurant restaurant2 = restaurantRepository.find(id);
+			Restaurant restaurant2 = restaurantRepository.findById(id).orElse(null);
 			
 			if (restaurant2 != null) {
 				BeanUtils.copyProperties(restaurant, restaurant2, "id");
@@ -82,7 +99,7 @@ public class RestaurantController {
 	
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> updatePartial(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
-		Restaurant restaurant = restaurantRepository.find(id);
+		Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
 		
 		if (restaurant == null) {
 			return ResponseEntity.notFound().build();
