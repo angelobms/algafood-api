@@ -8,31 +8,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-//@JsonRootName("kitchen")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Kitchen {
+public class GroupSystem {
 	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//@JsonIgnore
-	//@JsonProperty("title")
 	@Column(nullable = false)
 	private String name;
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "kitchen")
-	List<Restaurant> restaurants = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "group_permission", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	private List<Permission> permissions = new ArrayList<>();
 	
 }
