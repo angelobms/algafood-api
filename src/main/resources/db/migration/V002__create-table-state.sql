@@ -1,0 +1,5 @@
+CREATE TABLE state (
+  id bigint NOT NULL AUTO_INCREMENT,
+  name varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
