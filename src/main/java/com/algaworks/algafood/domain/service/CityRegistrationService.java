@@ -1,44 +1,51 @@
 package com.algaworks.algafood.domain.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.algaworks.algafood.domain.exception.CityNotFoundException;
+import com.algaworks.algafood.domain.exception.EntityInUseException;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.CityRepositpry;
-import com.algaworks.algafood.domain.repository.StateRepository;
 
 @Service
 public class CityRegistrationService {
 
+	private static final String MSG_CITY_IN_USE = "City of code %d cannot be removed because it is in use.";
+
 	@Autowired
-	private StateRepository stateRepository;
-	
+	private StateRegistrationService stateRegistrationService;
+
 	@Autowired
 	private CityRepositpry cityRepositpry;
-	
+
 	public City save(City city) {
 		Long stateId = city.getState().getId();
-		State state = stateRepository.findById(stateId).orElseThrow(() -> new EntityNotFoundException(
-				String.format("There is no state register with the code %d.", stateId)));
-		
+
+		State state = stateRegistrationService.findOrFail(stateId);
+
 		city.setState(state);
-		
+
 		return cityRepositpry.save(city);
 	}
-	
+
 	public void delete(Long cityId) {
 		try {
 			cityRepositpry.deleteById(cityId);
-			
+
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(
-					String.format("There is no city register with the code %d.", cityId));	
-			
-		} 
+			throw new CityNotFoundException(cityId);
+
+		} catch (DataIntegrityViolationException e) {
+			throw new EntityInUseException(String.format(MSG_CITY_IN_USE, cityId));
+		}
+	}
+
+	public City findOrFail(Long cityId) {
+		return cityRepositpry.findById(cityId).orElseThrow(() -> new CityNotFoundException(cityId));
 	}
 }
