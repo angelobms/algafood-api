@@ -17,16 +17,24 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.algaworks.algafood.core.validation.Groups;
+import com.algaworks.algafood.core.validation.ValueZeroAddDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@ValueZeroAddDescription(valueField = "freightRate", descriptionField = "name", mandatoryDescription="Free shipping")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -37,12 +45,21 @@ public class Restaurant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
 	@Column(nullable = false)
 	private String name;
 	
+	@NotNull
+	@PositiveOrZero
+	//@PositiveOrZero(message = "{freightRate.invalid}")
+	//@FreightRate
+	//@Multiple(number = 5)
 	@Column(name = "freight_rate", nullable = false)
 	private BigDecimal freightRate;
 	
+	@Valid
+	@ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
+	@NotNull
 //	@JsonIgnoreProperties("hibernateLazyInitializer")
 //	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
