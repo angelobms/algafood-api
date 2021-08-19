@@ -10,7 +10,8 @@ public enum ProblemType {
 	INCOMPREHENSIBLE_MESSAGE("Incomprehensible message","/incomprehensible-message"),
 	RESOURCE_NOT_FOUND("Resource not found", "/resource-not-found"),
 	ENTITY_IN_USE("Entity in use", "/entity-in-use"),
-	ERRO_BUSINESS("Violation of business rule", "/erro-business");
+	ERRO_BUSINESS("Violation of business rule", "/erro-business"),
+	INVALID_DATA("Invalid data", "/invalid-data");
 	
 	private String title;
 	private String uri;
