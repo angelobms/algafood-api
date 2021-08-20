@@ -1,0 +1,7 @@
+{
+    "name": "New York Barbecue",
+    "freightRate": 12,
+    "kitchen": {
+        "id": 2
+    }
+}
