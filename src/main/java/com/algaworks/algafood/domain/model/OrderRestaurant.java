@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +47,11 @@ public class OrderRestaurant {
 	StatusOrder status;
 	
 	@CreationTimestamp
-	private LocalDateTime registrationDate;
+	private OffsetDateTime registrationDate;
 	
-	private LocalDateTime confirmationDate;
-	private LocalDateTime cancellationDate;
-	private LocalDateTime deliveryDate;
+	private OffsetDateTime confirmationDate;
+	private OffsetDateTime cancellationDate;
+	private OffsetDateTime deliveryDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "payment_method_id", nullable = false)

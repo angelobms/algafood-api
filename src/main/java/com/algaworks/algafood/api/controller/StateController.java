@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.StateInputDisassembler;
+import com.algaworks.algafood.api.assembler.StateModelAssembler;
+import com.algaworks.algafood.api.model.StateModel;
+import com.algaworks.algafood.api.model.input.StateInput;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.service.StateRegistrationService;
@@ -30,30 +34,43 @@ public class StateController {
 
 	@Autowired
 	private StateRegistrationService stateRegistrationService;
+	
+	@Autowired
+	private StateModelAssembler stateModelAssembler;
+	
+	@Autowired
+	private StateInputDisassembler stateInputDisassembler; 
 
 	@GetMapping
-	public List<State> list() {
-		return stateRepository.findAll();
+	public List<StateModel> list() {
+		return stateModelAssembler.toCollectionModel(stateRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public State find(@PathVariable Long id) {
-		return stateRegistrationService.findOrFail(id);
+	public StateModel find(@PathVariable Long id) {
+		return stateModelAssembler.toModel(stateRegistrationService.findOrFail(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public State add(@RequestBody @Valid State state) {
-		return stateRegistrationService.save(state);
+	public StateModel add(@RequestBody @Valid StateInput stateInput) {
+		State state = stateInputDisassembler.toDomainObject(stateInput);
+		
+		state = stateRegistrationService.save(state);
+		
+		return stateModelAssembler.toModel(state);
 	}
 
 	@PutMapping("/{id}")
-	public State update(@PathVariable Long id, @RequestBody @Valid State state) {
+	public StateModel update(@PathVariable Long id, @RequestBody @Valid StateInput stateInput) {
 		State state2 = stateRepository.findById(id).orElse(null);
+		
+		stateInputDisassembler.copyToDomainObject(stateInput, state2);
+//		BeanUtils.copyProperties(state, state2, "id");
 
-		BeanUtils.copyProperties(state, state2, "id");
-
-		return stateRegistrationService.save(state2);
+		state2 = stateRegistrationService.save(state2);
+		
+		return stateModelAssembler.toModel(state2);
 	}
 
 	@DeleteMapping("/{id}")

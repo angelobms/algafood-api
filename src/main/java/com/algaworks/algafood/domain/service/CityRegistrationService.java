@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.EntityInUseException;
@@ -23,6 +24,7 @@ public class CityRegistrationService {
 	@Autowired
 	private CityRepositpry cityRepositpry;
 
+	@Transactional
 	public City save(City city) {
 		Long stateId = city.getState().getId();
 
@@ -33,9 +35,11 @@ public class CityRegistrationService {
 		return cityRepositpry.save(city);
 	}
 
+	@Transactional
 	public void delete(Long cityId) {
 		try {
 			cityRepositpry.deleteById(cityId);
+			cityRepositpry.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new CityNotFoundException(cityId);
