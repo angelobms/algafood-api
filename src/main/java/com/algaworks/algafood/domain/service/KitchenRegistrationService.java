@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntityInUseException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
@@ -18,13 +19,16 @@ public class KitchenRegistrationService {
 	@Autowired
 	KitchenRepository kitchenRepository;
 
+	@Transactional
 	public Kitchen save(Kitchen kitchen) {
 		return kitchenRepository.save(kitchen);
 	}
 
+	@Transactional
 	public void delete(Long kitchenId) {
 		try {
 			kitchenRepository.deleteById(kitchenId);
+			kitchenRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new KitchenNotFoundException(kitchenId);

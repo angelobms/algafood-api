@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.KitchenInputDisassembler;
+import com.algaworks.algafood.api.assembler.KitchenModelAssembler;
+import com.algaworks.algafood.api.model.KitchenModel;
 import com.algaworks.algafood.api.model.KitchensXmlWrapper;
+import com.algaworks.algafood.api.model.input.KitchenInput;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
 import com.algaworks.algafood.domain.service.KitchenRegistrationService;
@@ -33,9 +37,15 @@ public class KitchenController {
 	@Autowired
 	private KitchenRegistrationService kitchenRegistrationService;
 	
+	@Autowired
+	private KitchenModelAssembler kitchenModelAssembler;
+	
+	@Autowired
+	private KitchenInputDisassembler kitchenInputDisassembler; 
+	
 	@GetMapping
-	public List<Kitchen> list() {
-		return kitchenRepository.findAll();
+	public List<KitchenModel> list() {
+		return kitchenModelAssembler.toCollectionModel(kitchenRepository.findAll());
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
@@ -44,23 +54,30 @@ public class KitchenController {
 	}
 	
 	@GetMapping("/{id}")
-	public Kitchen find(@PathVariable("id") Long id) {
-		return kitchenRegistrationService.findOrFail(id);	
+	public KitchenModel find(@PathVariable("id") Long id) {
+		return kitchenModelAssembler.toModel(kitchenRegistrationService.findOrFail(id));	
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Kitchen add(@RequestBody @Valid Kitchen kitchen) {
-		return kitchenRegistrationService.save(kitchen);
+	public KitchenModel add(@RequestBody @Valid KitchenInput kitchenInput) {
+		Kitchen kitchen = kitchenInputDisassembler.toDomainObject(kitchenInput);
+
+		kitchen = kitchenRegistrationService.save(kitchen);
+		
+		return kitchenModelAssembler.toModel(kitchen);
 	}
 	
 	@PutMapping("/{id}")
-	public Kitchen update(@PathVariable Long id, @RequestBody @Valid Kitchen kitchen) {
+	public KitchenModel update(@PathVariable Long id, @RequestBody @Valid KitchenInput kitchenInput) {
 		Kitchen kitchen2 = kitchenRegistrationService.findOrFail(id);
+		
+//		BeanUtils.copyProperties(kitchen, kitchen2, "id");
+		kitchenInputDisassembler.copyToDomainObject(kitchenInput, kitchen2);
 
-		BeanUtils.copyProperties(kitchen, kitchen2, "id");
-
-		return kitchenRegistrationService.save(kitchen2);
+		kitchen2 = kitchenRegistrationService.save(kitchen2); 
+		
+		return kitchenModelAssembler.toModel(kitchen2);
 	}
 	
 	@DeleteMapping("/{id}")

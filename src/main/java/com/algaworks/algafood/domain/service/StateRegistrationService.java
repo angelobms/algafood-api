@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntityInUseException;
 import com.algaworks.algafood.domain.exception.StateNotFoundException;
@@ -18,13 +19,16 @@ public class StateRegistrationService {
 	@Autowired
 	StateRepository stateRepository;
 
+	@Transactional
 	public State save(State state) {
 		return stateRepository.save(state);
 	}
 
+	@Transactional
 	public void delete(Long stateId) {
 		try {
 			stateRepository.deleteById(stateId);
+			stateRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new StateNotFoundException(stateId);
