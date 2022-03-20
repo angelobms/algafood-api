@@ -24,6 +24,8 @@ alter table permission auto_increment = 1;
 alter table user_system auto_increment = 1;
 alter table restaurant auto_increment = 1;
 alter table product auto_increment = 1;
+alter table order_restaurant auto_increment = 1;
+alter table order_item auto_increment = 1;
 
 insert into kitchen (id, name) values (1, 'Tailandesa');
 insert into kitchen (id, name) values (2, 'Indiana');
@@ -67,3 +69,45 @@ insert into product (name, description, price, active, restaurant_id) values ('A
 insert into product (name, description, price, active, restaurant_id) values ('T-Bone', 'Very tasty cut, with a T-shaped bone, with the tenderloin on one side and the tenderloin on the other', 89, 1, 4);
 insert into product (name, description, price, active, restaurant_id) values ('X-Tudo sandwich', 'Sandwich with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 insert into product (name, description, price, active, restaurant_id) values ('Termite Skewer', 'Accompanies flour, cassava and vinaigrette', 8, 1, 6);
+
+insert into group_system (id, name) values (1, 'Manager'), (2, 'Seller'), (3, 'Secretary'), (4, 'Recorder');
+
+insert into group_permission (group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1); 
+
+insert into user_system (id, name, email, password, registration_date) values
+(1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
+(2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
+(3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
+(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);   
+
+delete from restaurant_responsible_user;
+
+insert into user_system (id, name, email, password, registration_date) values
+(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
+
+insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);
+
+delete from order_item;
+delete from order_restaurant;
+
+insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, sub_total, freight_rate, total_value)
+values (1, 'd5bd7340-a772-45de-adca-e46944d833fb', 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIETED', utc_timestamp, 298.90, 10, 308.90);
+
+insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
+values (1, 1, 1, 1, 78.9, 78.9, null);
+
+insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
+values (2, 1, 2, 2, 110, 220, 'Less spicy please');
+
+insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, sub_total, freight_rate, total_value)
+values (2, '98288f5e-88cc-47e6-8ab6-b18538dd5892', 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIETED', utc_timestamp, 79, 0, 79);
+
+insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
+values (3, 2, 6, 1, 79, 79, 'To the point');
+
+
+
+
+
+
+

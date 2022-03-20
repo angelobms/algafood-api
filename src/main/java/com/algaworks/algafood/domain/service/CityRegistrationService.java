@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.EntityInUseException;
-import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.CityRepositpry;
