@@ -21,7 +21,9 @@ import com.algaworks.algafood.api.assembler.RestaurantModelAssembler;
 import com.algaworks.algafood.api.model.RestaurantModel;
 import com.algaworks.algafood.api.model.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
+import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
+import com.algaworks.algafood.domain.exception.RestaurantNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 import com.algaworks.algafood.domain.service.RestaurantRegistrationService;
@@ -79,7 +81,7 @@ public class RestaurantController {
 			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 			
 			return restaurantModelAssemebler.toModel(restaurantRegistrationService.save(restaurant));
-		} catch (KitchenNotFoundException e) {
+		} catch (KitchenNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 	}
@@ -95,7 +97,7 @@ public class RestaurantController {
 		
 		try {
 			return restaurantModelAssemebler.toModel(restaurantRegistrationService.save(restaurant2));					
-		} catch (KitchenNotFoundException e) {
+		} catch (KitchenNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage());
 		}
 	}
@@ -146,6 +148,50 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remove(@PathVariable Long id) {
 		restaurantRegistrationService.delete(id);
+	}
+	
+	@PutMapping("/{restaurantId}/active")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void activate(@PathVariable Long restaurantId) {
+		restaurantRegistrationService.activate(restaurantId);
+	}
+	
+	@DeleteMapping("/{restaurantId}/active")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inactivate(@PathVariable Long restaurantId) {
+		restaurantRegistrationService.inactivate(restaurantId);
+	}
+	
+	@PutMapping("/activates")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void activateAll(@RequestBody List<Long> restaurantIds) {
+		try {
+			restaurantRegistrationService.activate(restaurantIds);
+		} catch (RestaurantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
+	}
+	
+	@DeleteMapping("/inactivates")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inactivateAll(@RequestBody List<Long> restaurantIds) {
+		try {
+			restaurantRegistrationService.inactivate(restaurantIds);
+		} catch (RestaurantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}		
+	}
+	
+	@PutMapping("/{restaurantId}/open")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void open(@PathVariable Long restaurantId) {
+		restaurantRegistrationService.open(restaurantId);
+	}
+	
+	@PutMapping("/{restaurantId}/close")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void close(@PathVariable Long restaurantId) {
+		restaurantRegistrationService.close(restaurantId);
 	}
 	
 }

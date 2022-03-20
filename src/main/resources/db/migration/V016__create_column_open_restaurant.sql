@@ -1,0 +1,2 @@
+ALTER TABLE restaurant ADD open TINYINT(1) NOT NULL DEFAULT 0;
+UPDATE restaurant SET open = FALSE;

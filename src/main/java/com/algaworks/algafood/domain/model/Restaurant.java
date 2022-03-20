@@ -3,7 +3,9 @@ package com.algaworks.algafood.domain.model;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -66,6 +68,10 @@ public class Restaurant {
 	@Embedded
 	private Address address;
 	
+	private Boolean active = Boolean.TRUE;
+	
+	private Boolean open = Boolean.FALSE;
+	
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime registrationDate;
@@ -76,9 +82,52 @@ public class Restaurant {
 	
 	@ManyToMany
 	@JoinTable(name = "restaurant_payment_method", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
-	private List<PaymentMethod> paymentMethods = new ArrayList<>();
+	private Set<PaymentMethod> paymentMethods = new HashSet<>();
 	
 	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products = new ArrayList<>();
 	
+	@ManyToMany
+	@JoinTable(name = "restaurant_responsible_user", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<UserSystem> responsibles = new HashSet<>();
+	
+	public void activate() {
+		setActive(true);
+	}
+	
+	public void inactivate() {
+		setActive(false);
+	}
+	
+	public void open() {
+		setOpen(true);
+	}
+	
+	public void close() {
+		setOpen(false);
+	}
+	
+	public boolean addPaymentMethod(PaymentMethod paymentMethod) {
+		return getPaymentMethods().add(paymentMethod);
+	}
+	
+	public boolean removePaymentMethod(PaymentMethod paymentMethod) {
+		return getPaymentMethods().remove(paymentMethod);
+	}
+		
+	public boolean addResponsible(UserSystem user) {
+	    return getResponsibles().add(user);
+	}
+	
+	public boolean removeResponsible(UserSystem user) {
+	    return getResponsibles().remove(user);
+	}
+
+	public boolean acceptsPaymentMethod(PaymentMethod paymentMethod) {
+		return getPaymentMethods().contains(paymentMethod);
+	}
+	
+	public boolean notAcceptPaymentMethod(PaymentMethod paymentMethod) {
+		return getPaymentMethods().contains(paymentMethod);
+	}
 }

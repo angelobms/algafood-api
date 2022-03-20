@@ -1,8 +1,8 @@
 package com.algaworks.algafood.domain.model;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,5 +46,21 @@ public class UserSystem {
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-	private List<GroupSystem> groups = new ArrayList<>();
+	private Set<GroupSystem> groups = new HashSet<>();
+	
+	public boolean passwordMatches(String password) {
+		return getPassword().equals(password);
+	}
+	
+	public boolean passwordNotMatches(String password) {
+		return !passwordMatches(password);
+	}
+	
+	public boolean addGroup(GroupSystem groupSystem) {
+		return getGroups().add(groupSystem);
+	}
+	
+	public boolean renoveGroup(GroupSystem groupSystem) {
+		return getGroups().remove(groupSystem);
+	}
 }

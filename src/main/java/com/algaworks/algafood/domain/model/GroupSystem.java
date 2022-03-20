@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +33,14 @@ public class GroupSystem {
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "group_permission", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	private List<Permission> permissions = new ArrayList<>();
+	private Set<Permission> permissions = new HashSet<>();
+	
+	public boolean addPermission(Permission permission) {
+		return getPermissions().add(permission);
+	}
+	
+	public boolean removePermission(Permission permission) {
+		return getPermissions().remove(permission);
+	}
 	
 }
