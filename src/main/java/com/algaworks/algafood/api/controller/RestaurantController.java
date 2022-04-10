@@ -20,6 +20,7 @@ import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestaurantModelAssembler;
 import com.algaworks.algafood.api.model.RestaurantModel;
 import com.algaworks.algafood.api.model.input.RestaurantInput;
+import com.algaworks.algafood.api.model.view.RestaurantView;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
@@ -27,6 +28,7 @@ import com.algaworks.algafood.domain.exception.RestaurantNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 import com.algaworks.algafood.domain.service.RestaurantRegistrationService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -46,10 +48,47 @@ public class RestaurantController {
 	
 //	@Autowired
 //	private SmartValidator smartValidator;
+	
+	
+//	@GetMapping
+//	public MappingJacksonValue list(@RequestParam(required = false) String projection) {
+//		List<Restaurant> restaurants = restaurantRepository.findAll();
+//		List<RestaurantModel> restaurantsModel = restaurantModelAssemebler.toCollectionModel(restaurants);
+//		
+//		MappingJacksonValue restaurantsWrapper = new MappingJacksonValue(restaurantsModel);
+//		restaurantsWrapper.setSerializationView(RestaurantView.Summary.class);
+//		
+//		if ("only-name".equals(projection)) {
+//			restaurantsWrapper.setSerializationView(RestaurantView.OnlyName.class);			
+//		} else if ("complete".equals(projection)) {
+//			restaurantsWrapper.setSerializationView(null);
+//		}
+//		
+//		
+//		return restaurantsWrapper;
+//	}
+	
+//	@GetMapping
+//	public List<RestaurantModel> list() {
+//		return restaurantModelAssemebler.toCollectionModel(restaurantRepository.findAll());
+//	}
 
+	@JsonView(RestaurantView.Summary.class)
 	@GetMapping
-	public List<RestaurantModel	> list() {
+	public List<RestaurantModel> list() {
 		return restaurantModelAssemebler.toCollectionModel(restaurantRepository.findAll());
+	}
+	
+//	@JsonView(RestaurantView.Summary.class)
+//	@GetMapping(params = "projection=summary")
+//	public List<RestaurantModel	> listSummarized() {
+//		return list();
+//	}
+	
+	@JsonView(RestaurantView.OnlyName.class)
+	@GetMapping(params = "projection=only-name")
+	public List<RestaurantModel	> listOnlyName() {
+		return list();
 	}
 
 	@GetMapping("/{id}")
