@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+//@JsonFilter("orderFilter")
 @Getter
 @Setter
 public class OrderSummaryModel {
@@ -18,5 +19,6 @@ public class OrderSummaryModel {
     private OffsetDateTime registrationDate;
     private RestaurantSummaryModel restaurant;
     private UserSystemModel customer;
+    //private String customerName;
        
 }

@@ -60,7 +60,7 @@ insert into permission (id, name, description) values (2, 'EDIT_KITCHENS', 'Allo
 
 insert into restaurant_payment_method (restaurant_id, payment_method_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
-insert into product (name, description, price, active, restaurant_id) values ('Pork with sweet and sour sauce', 'Delicious pork meat with special sauce', 78.90, 1, 1);
+insert into product (name, description, price, active, restaurant_id) values ('Pork with sweet and sour sauce', 'Delicious pork meat with special sauce', 78.90, 0, 1);
 insert into product (name, description, price, active, restaurant_id) values ('Thai shrimp', '16 large prawns in hot sauce', 110, 1, 1);
 insert into product (name, description, price, active, restaurant_id) values ('Spicy salad with grilled meat', 'Leaf salad with fine cuts of grilled beef and our special red pepper sauce', 87.20, 1, 2);
 insert into product (name, description, price, active, restaurant_id) values ('Garlic Naan', 'Traditional Indian bread with garlic topping', 21, 1, 3);
@@ -78,12 +78,10 @@ insert into user_system (id, name, email, password, registration_date) values
 (1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
 (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
 (3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
-(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);   
+(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp),
+(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);  
 
 delete from restaurant_responsible_user;
-
-insert into user_system (id, name, email, password, registration_date) values
-(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);
 
@@ -96,6 +94,7 @@ values (1, 'd5bd7340-a772-45de-adca-e46944d833fb', 1, 1, 1, 1, '38400-000', 'Rua
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (1, 1, 1, 1, 78.9, 78.9, null);
 
+
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (2, 1, 2, 2, 110, 220, 'Less spicy please');
 
@@ -104,6 +103,30 @@ values (2, '98288f5e-88cc-47e6-8ab6-b18538dd5892', 4, 1, 2, 1, '38400-111', 'Rua
 
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (3, 2, 6, 1, 79, 79, 'To the point');
+
+
+insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, confirmation_date, delivery_date, sub_total, freight_rate, total_value)
+values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 1, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil', 'DELIVERED', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
+
+insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
+values (4, 3, 2, 1, 110, 110, null);
+
+
+insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, confirmation_date, delivery_date, sub_total, freight_rate, total_value)
+values (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 2, 1, 1, '38400-800', 'Rua Fortaleza', '900', 'Apto 504', 'Centro', 'DELIVERED', '2019-11-02 20:34:04', '2019-11-02 20:35:10', '2019-11-02 21:10:32', 174.4, 5, 179.4);
+
+insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
+values (5, 4, 3, 2, 87.2, 174.4, null);
+
+
+insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, confirmation_date, delivery_date, sub_total, freight_rate, total_value)
+values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua 10', '930', 'Casa 20', 'Martins', 'DELIVERED', '2019-11-03 02:00:30', '2019-11-03 02:01:21', '2019-11-03 02:20:10', 87.2, 10, 97.2);
+
+insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
+values (6, 5, 3, 1, 87.2, 87.2, null);
+
+
+
 
 
 
