@@ -8,29 +8,31 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+
+import com.algaworks.algafood.api.model.input.ProductPhotoInput;
 
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/products/{productId}/photo")
 public class RestaurantProductPhotoController {
-	
+
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId, @RequestParam MultipartFile file) {
-		
-		var fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();		
+	public void updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
+			ProductPhotoInput productPhotoInput) {
+
+		var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
 		var photoFile = Path.of("/home/angelobms/Downloads/upload", fileName);
-		
+
+		System.out.println(productPhotoInput.getDescription());
 		System.out.println(photoFile);
-		System.out.println(file.getContentType());
-		
+		System.out.println(productPhotoInput.getFile().getContentType());
+
 		try {
-			file.transferTo(photoFile);
+			productPhotoInput.getFile().transferTo(photoFile);
 		} catch (IllegalStateException | IOException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 	}
 
 }
