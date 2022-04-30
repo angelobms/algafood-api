@@ -1,6 +1,7 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -37,9 +38,18 @@ public class LocalPhotoStorageService implements PhotoStorageService {
 		
 	}
 	
+	@Override
+	public InputStream recover(String fileName) {		
+		try {
+			Path filePath = getFilePath(fileName);
+			return Files.newInputStream(filePath);
+		} catch (IOException e) {
+			throw new StorageException("Could not recover file.", e);
+		}
+	}
+	
 	private Path getFilePath(String fileName) {
 		return folderPhotos.resolve(Path.of(fileName)); 
 	}
-
-
+	
 }
