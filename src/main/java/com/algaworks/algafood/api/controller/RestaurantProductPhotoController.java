@@ -37,7 +37,7 @@ public class RestaurantProductPhotoController {
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ProductPhotoModel updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
-			@Valid ProductPhotoInput productPhotoInput) {
+			@Valid ProductPhotoInput productPhotoInput) throws IOException {
 
 //		var fileName = UUID.randomUUID().toString() + "_" + productPhotoInput.getFile().getOriginalFilename();
 //		var photoFile = Path.of("/home/angelobms/Downloads/upload", fileName);
@@ -63,7 +63,7 @@ public class RestaurantProductPhotoController {
 		photo.setSize(file.getSize());
 		photo.setFileName(file.getOriginalFilename());
 		
-		ProductPhoto productPhoto = productPhotoCatalogService.save(photo);
+		ProductPhoto productPhoto = productPhotoCatalogService.save(photo, file.getInputStream());
 		
 		return productPhotoModelAssembler.toModel(productPhoto);
 	}
