@@ -1,5 +1,6 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -25,8 +26,20 @@ public class LocalPhotoStorageService implements PhotoStorageService {
 		}
 	}
 	
+	@Override
+	public void remove(String fileName) {
+		try {
+			Path filePath = getFilePath(fileName);
+			Files.deleteIfExists(filePath);
+		} catch (IOException e) {
+			throw new StorageException("Could not delete file.", e);
+		}
+		
+	}
+	
 	private Path getFilePath(String fileName) {
 		return folderPhotos.resolve(Path.of(fileName)); 
 	}
+
 
 }
