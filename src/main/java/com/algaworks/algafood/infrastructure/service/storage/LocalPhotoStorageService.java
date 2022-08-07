@@ -12,7 +12,7 @@ import org.springframework.util.FileCopyUtils;
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.PhotoStorageService;
 
-@Service
+//@Service
 public class LocalPhotoStorageService implements PhotoStorageService {
 	
 	@Autowired
