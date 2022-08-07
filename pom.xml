@@ -102,6 +102,8 @@
 		    <artifactId>squiggly-filter-jackson</artifactId>
 		    <version>${squiggly.version}</version>
 		</dependency>
+		
+		
 	</dependencies>
 
 	<build>

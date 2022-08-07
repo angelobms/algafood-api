@@ -5,17 +5,18 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.PhotoStorageService;
 
 @Service
 public class LocalPhotoStorageService implements PhotoStorageService {
 	
-	@Value("${algafood.storage.local.folder-photo}")
-	private Path folderPhotos;
+	@Autowired
+	private StorageProperties storageProperties;
 
 	@Override
 	public void store(NewPhoto newPhoto) {
@@ -49,7 +50,7 @@ public class LocalPhotoStorageService implements PhotoStorageService {
 	}
 	
 	private Path getFilePath(String fileName) {
-		return folderPhotos.resolve(Path.of(fileName)); 
+		return storageProperties.getLocal().getFolderPhoto().resolve(Path.of(fileName));
 	}
 	
 }
