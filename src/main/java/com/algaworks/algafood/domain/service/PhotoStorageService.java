@@ -28,10 +28,9 @@ public interface PhotoStorageService {
 	@Builder
 	@Getter	
 	class NewPhoto {
-		
 		private String fileName;
+		private String contentType;
 		private InputStream inputStream;
-		
 	}
 
 }

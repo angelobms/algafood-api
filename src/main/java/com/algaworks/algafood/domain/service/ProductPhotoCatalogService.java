@@ -39,7 +39,10 @@ public class ProductPhotoCatalogService {
 		photo = productRepository.save(photo);
 		productRepository.flush();
 
-		NewPhoto newPhoto = NewPhoto.builder().fileName(photo.getFileName()).inputStream(fileData).build();
+		NewPhoto newPhoto = NewPhoto.builder()
+				.fileName(photo.getFileName())
+				.contentType(photo.getContentType())
+				.inputStream(fileData).build();
 
 		photoStorageService.replace(oldFileName, newPhoto);
 
