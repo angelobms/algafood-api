@@ -79,7 +79,10 @@ insert into user_system (id, name, email, password, registration_date) values
 (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
 (3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp),
-(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);  
+(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp),
+(6, 'Débora Mendonça', 'email.test.bmsit+debora@gmail.com', '123', utc_timestamp),
+(7, 'Carlos Lima', 'email.test.bmsit+carlos@gmail.com', '123', utc_timestamp);
+  
 
 delete from restaurant_responsible_user;
 
@@ -89,7 +92,7 @@ delete from order_item;
 delete from order_restaurant;
 
 insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, sub_total, freight_rate, total_value)
-values (1, 'd5bd7340-a772-45de-adca-e46944d833fb', 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIETED', utc_timestamp, 298.90, 10, 308.90);
+values (1, 'd5bd7340-a772-45de-adca-e46944d833fb', 1, 6, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIETED', utc_timestamp, 298.90, 10, 308.90);
 
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (1, 1, 1, 1, 78.9, 78.9, null);
@@ -99,28 +102,28 @@ insert into order_item (id, order_id, product_id, amount, unit_price, total_pric
 values (2, 1, 2, 2, 110, 220, 'Less spicy please');
 
 insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, sub_total, freight_rate, total_value)
-values (2, '98288f5e-88cc-47e6-8ab6-b18538dd5892', 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIETED', utc_timestamp, 79, 0, 79);
+values (2, '98288f5e-88cc-47e6-8ab6-b18538dd5892', 4, 6, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIETED', utc_timestamp, 79, 0, 79);
 
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (3, 2, 6, 1, 79, 79, 'To the point');
 
 
 insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, confirmation_date, delivery_date, sub_total, freight_rate, total_value)
-values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 1, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil', 'DELIVERED', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
+values (3, 'b5741512-8fbc-47fa-9ac1-b530354fc0ff', 1, 6, 1, 1, '38400-222', 'Rua Natal', '200', null, 'Brasil', 'DELIVERED', '2019-10-30 21:10:00', '2019-10-30 21:10:45', '2019-10-30 21:55:44', 110, 10, 120);
 
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (4, 3, 2, 1, 110, 110, null);
 
 
 insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, confirmation_date, delivery_date, sub_total, freight_rate, total_value)
-values (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 2, 1, 1, '38400-800', 'Rua Fortaleza', '900', 'Apto 504', 'Centro', 'DELIVERED', '2019-11-02 20:34:04', '2019-11-02 20:35:10', '2019-11-02 21:10:32', 174.4, 5, 179.4);
+values (4, '5c621c9a-ba61-4454-8631-8aabefe58dc2', 1, 7, 1, 1, '38400-800', 'Rua Fortaleza', '900', 'Apto 504', 'Centro', 'DELIVERED', '2019-11-02 20:34:04', '2019-11-02 20:35:10', '2019-11-02 21:10:32', 174.4, 5, 179.4);
 
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (5, 4, 3, 2, 87.2, 174.4, null);
 
 
 insert into order_restaurant (id, xtid, restaurant_id, customer_user_id, payment_method_id, address_city_id, address_cep, address_street, address_number, address_complement, address_district, status, registration_date, confirmation_date, delivery_date, sub_total, freight_rate, total_value)
-values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua 10', '930', 'Casa 20', 'Martins', 'DELIVERED', '2019-11-03 02:00:30', '2019-11-03 02:01:21', '2019-11-03 02:20:10', 87.2, 10, 97.2);
+values (5, '8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 7, 2, 1, '38400-200', 'Rua 10', '930', 'Casa 20', 'Martins', 'DELIVERED', '2019-11-03 02:00:30', '2019-11-03 02:01:21', '2019-11-03 02:20:10', 87.2, 10, 97.2);
 
 insert into order_item (id, order_id, product_id, amount, unit_price, total_price, observation)
 values (6, 5, 3, 1, 87.2, 87.2, null);

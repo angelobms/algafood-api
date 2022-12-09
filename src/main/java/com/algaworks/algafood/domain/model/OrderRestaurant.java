@@ -22,7 +22,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algaworks.algafood.domain.event.OrderCancelledEvent;
+import com.algaworks.algafood.domain.event.OrderConfirmedEvent;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,9 +33,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class OrderRestaurant {
+public class OrderRestaurant extends AbstractAggregateRoot<OrderRestaurant> {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -90,11 +93,15 @@ public class OrderRestaurant {
 	public void confirm() {
 		setStatus(StatusOrder.CONFIRMED);
 		setConfirmationDate(OffsetDateTime.now());
+		
+		registerEvent(new OrderConfirmedEvent(this));
 	}
 
 	public void cancel() {
 		setStatus(StatusOrder.CANCELED);
 		setCancellationDate(OffsetDateTime.now());
+		
+		registerEvent(new OrderCancelledEvent(this));
 	}
 
 	public void delivery() {
